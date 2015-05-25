@@ -13,4 +13,6 @@ public abstract class DAOFactory {
 			return null;
 		}
 	}
+
+	public abstract boolean createDatabase(String user, String password);
 }

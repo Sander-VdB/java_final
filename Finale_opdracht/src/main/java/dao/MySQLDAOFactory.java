@@ -25,24 +25,35 @@ public class MySQLDAOFactory extends DAOFactory {
 		return null;
 	}
 
-	public static boolean createDatabase(String _user, String _password) {
-		final String SQL_CREATEDATABASE = "CREATE DATABASE IF NOT EXISTS ?";
+	@Override
+	public boolean createDatabase(String _user, String _password) {
+		final String SQL_CREATEDATABASE = "CREATE DATABASE IF NOT EXISTS " + DATABASE;
+		final String SQL_CREATEUSER = "GRANT SELECT,INSERT,DELETE ON " + DATABASE + ".* TO " + USER + " IDENTIFIED BY '"
+				+ PASSWORD + "'";
 		try {
 			Class.forName(DRIVER).newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		// create database
 		try (Connection connection = DriverManager.getConnection(URL, _user, _password);
-				PreparedStatement statement = connection.prepareStatement(SQL_CREATEDATABASE);) {
-			statement.setString(1, DATABASE);
-			statement.execute();
-			return true;
+				PreparedStatement databasequery = connection.prepareStatement(SQL_CREATEDATABASE);
+				PreparedStatement userquery = connection.prepareStatement(SQL_CREATEUSER);) {
+			databasequery.execute();
+			userquery.execute();
 		} catch (Exception ex) {
 			ex.getMessage();
+			return false;
 		}
-		return false;
+		// create all tables
+		try {
+			new MySQLUserDAO().createTable(_user, _password);
+		} catch (Exception ex) {
+			ex.getMessage();
+			return false;
+		}
+		return true;
 	}
 
 	@Override

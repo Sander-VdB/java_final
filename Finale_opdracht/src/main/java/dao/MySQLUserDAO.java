@@ -152,7 +152,21 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public boolean createTable(String user, String password) {
-		// TODO Auto-generated method stub
+		final String SQL_INSERT = "CREATE TABLE IF NOT EXISTS Users (Id INT NOT NULL AUTO_INCREMENT,"
+				+ "Username VARCHAR(30) NOT NULL," + "Password VARCHAR(30) NOT NULL," + "PRIMARY KEY (Id))";
+		try (Connection connection = MySQLDAOFactory.createConnection(user, password);
+				PreparedStatement statementInsert = connection.prepareStatement(SQL_INSERT)) {
+			connection.setAutoCommit(false);
+
+			if (statementInsert.executeUpdate() == 1) {
+				connection.commit();
+				return true;
+			} else {
+				connection.rollback();
+			}
+		} catch (SQLException ex) {
+			System.console().printf(ex.getMessage());
+		}
 		return false;
 	}
 
