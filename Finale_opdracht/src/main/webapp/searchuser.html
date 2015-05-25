@@ -1,0 +1,28 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Search user</title>
+<link rel="stylesheet" href="./css/styles.css" type="text/css" />
+<script src="./scripts/ajax-utils.js" type="text/javascript"></script>
+</head>
+<body>
+	<div align="center">
+		<table border="5">
+			<tr>
+				<th class="title">Search user</th>
+			</tr>
+		</table>
+		<fieldset>
+			<legend>Search user</legend>
+			<form name="form" action="">
+				<label>Id: <input type="text" name="userId" /></label><br /> 
+				<label>Username:<input type="text" name="userName" /></label><br /> 
+				<input type="button" value="Search user" onclick='jsonRequest("searchUser",this.form, "userResult","users")'/>
+			</form>
+			<div id="userResult" class="ajaxResult"></div>
+		</fieldset>
+		<p />
+	</div>
+
+</body>
+</html>
