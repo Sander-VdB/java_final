@@ -60,4 +60,9 @@ public class MySQLDAOFactory extends DAOFactory {
 	public UserDAO getUserDAO() {
 		return new MySQLUserDAO();
 	}
+
+	@Override
+	public QuestionDAO getQuestionDAO() {
+		return new MySQLQuestionDAO();
+	}
 }
