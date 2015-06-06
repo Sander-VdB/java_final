@@ -245,7 +245,7 @@ public class MySQLQuestionDAO implements QuestionDAO {
 				PreparedStatement statementInsert = connection.prepareStatement(SQL_INSERT)) {
 			connection.setAutoCommit(false);
 
-			if (statementInsert.executeUpdate() == 1) {
+			if (statementInsert.executeUpdate() == 0) {
 				connection.commit();
 				return true;
 			} else {

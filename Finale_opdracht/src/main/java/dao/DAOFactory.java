@@ -7,6 +7,8 @@ public abstract class DAOFactory {
 
 	public abstract QuestionDAO getQuestionDAO();
 
+	public abstract TodoDAO getTodoDAO();
+
 	public static DAOFactory getDAOFactory(int choice) {
 		switch (choice) {
 		case MYSQL:
