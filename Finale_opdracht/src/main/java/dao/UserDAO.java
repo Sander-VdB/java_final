@@ -11,6 +11,8 @@ public interface UserDAO {
 
 	List<User> findByName(String username);
 
+	User find(String username, String password);
+
 	// List<User> findByName(String username, boolean ignoreCase);
 
 	/**

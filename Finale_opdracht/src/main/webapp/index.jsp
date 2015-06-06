@@ -1,8 +1,8 @@
 <html>
 <body>
 <h2>Ajax Basic</h2>
-<a href="signup.html">Registreer klant</a> 
+<a href="signup.html">Registreer gebruiker</a> 
 <br>
-<a href="zoekklant.html">Zoek klant</a>
+<a href="searchuser.html">Zoek gebruiker</a>
 </body>
 </html>

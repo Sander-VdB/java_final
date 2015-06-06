@@ -9,10 +9,8 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 /***
- *
  * @author FARHAN KHWAJA
  * @url http://www.code2learn.com/2011/06/encryption-and-decryption-of-data-using.html
- *
  */
 public class Encryptor {
 

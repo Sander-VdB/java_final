@@ -13,8 +13,8 @@ import bean.User;
 import dao.DAOFactory;
 import dao.UserDAO;
 
-@WebServlet("/signup")
-public class SignupUser extends HttpServlet {
+@WebServlet("/login")
+public class Login extends HttpServlet {
 	private UserDAO userdao = DAOFactory.getDAOFactory(DAOFactory.MYSQL).getUserDAO();
 
 	@Override
@@ -30,16 +30,17 @@ public class SignupUser extends HttpServlet {
 		} else {
 			try {
 
-				User user = new User();
-				user.setUsername(username);
-				user.setPassword(password);
-				user.setId(userdao.insertUser(user));
+				User user = userdao.find(username, password);
 
-				out.print("User added");
-				request.getSession().setAttribute("user", user);
+				if (user != null) {
+					request.getSession().setAttribute("user", user);
+					out.print("Login success");
+				} else {
+					out.print("Login failed!");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				out.print("Error on signup");
+				out.print("Error on login");
 			}
 		}
 	}

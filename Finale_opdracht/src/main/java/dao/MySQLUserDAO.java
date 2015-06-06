@@ -88,6 +88,28 @@ public class MySQLUserDAO implements UserDAO {
 	}
 
 	@Override
+	public User find(String username, String password) {
+		final String SQL_SELECT = "SELECT Id FROM Users WHERE Username=?,Password=?";
+		try (Connection connection = MySQLDAOFactory.createConnection();
+				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
+			statementSelect.setString(1, username);
+			statementSelect.setString(2, password);
+			ResultSet set = statementSelect.executeQuery();
+
+			User user = new User();
+			if (set.first()) {
+				user.setId(set.getInt("Id"));
+				user.setUsername(username);
+				user.setEncryptedPassword(password);
+			}
+			return user;
+		} catch (SQLException ex) {
+			System.console().printf(ex.getMessage());
+		}
+		return null;
+	}
+
+	@Override
 	public int insertUser(User user) {
 		final String SQL_INSERT = "INSERT INTO Users (Username,Password) VALUES (?,?)";
 		try (Connection connection = MySQLDAOFactory.createConnection();

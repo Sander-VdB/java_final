@@ -31,11 +31,5 @@
     	<artifactId>jstl</artifactId>
     	<version>1.2</version>
     </dependency>
-    <dependency>
-    	<groupId>org.apache.clerezza.ext</groupId>
-    	<artifactId>org.json.simple</artifactId>
-    	<version>0.4</version>
-    	<type>bundle</type>
-    </dependency>
   </dependencies>
 </project>
