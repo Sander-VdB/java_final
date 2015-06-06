@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.ParseAnswerException;
 import bean.Question;
 
 public class MySQLQuestionDAO implements QuestionDAO {
@@ -26,7 +27,7 @@ public class MySQLQuestionDAO implements QuestionDAO {
 
 			List<Question> questionList = new ArrayList<Question>();
 			while (set.next()) {
-				Question question = new Question();
+				Question question = Question.getQuestion(Question.Types.valueOf(set.getString("Type")));
 				question.setId(set.getInt("Id"));
 				question.setQuestion(set.getString("Question"));
 				question.setSeries(set.getString("Series"));
@@ -38,6 +39,9 @@ public class MySQLQuestionDAO implements QuestionDAO {
 			return questionList;
 		} catch (SQLException ex) {
 			System.console().printf(ex.getMessage());
+		} catch (ParseAnswerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -52,7 +56,7 @@ public class MySQLQuestionDAO implements QuestionDAO {
 
 			List<Question> questionList = new ArrayList<Question>();
 			while (set.next()) {
-				Question question = new Question();
+				Question question = Question.getQuestion(Question.Types.valueOf(set.getString("Type")));
 				question.setId(id);
 				question.setQuestion(set.getString("Question"));
 
@@ -75,7 +79,7 @@ public class MySQLQuestionDAO implements QuestionDAO {
 
 			List<Question> questionList = new ArrayList<Question>();
 			while (set.next()) {
-				Question question = new Question();
+				Question question = Question.getQuestion(Question.Types.valueOf(set.getString("Type")));
 				question.setId(set.getInt("Id"));
 				question.setQuestion(questionname);
 

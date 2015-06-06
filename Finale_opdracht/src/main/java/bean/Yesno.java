@@ -5,6 +5,11 @@ import util.ParseAnswerException;
 public class Yesno extends Question {
 	private boolean answer;
 
+	@Override
+	public Types getType() {
+		return Types.YESNO;
+	}
+
 	private boolean getAnswer() {
 		return answer;
 	}
@@ -28,7 +33,7 @@ public class Yesno extends Question {
 	}
 
 	@Override
-	public String toString() {
+	public String answerToString() {
 		return String.valueOf(this.getAnswer());
 	}
 

@@ -2,16 +2,41 @@ package bean;
 
 import util.ParseAnswerException;
 
-enum Types {
-	YESNO, MULTIPLECHOICE, CHECKBOXES, SLIDER, NUMERIC, DRAGANDDROP
-}
-
 public abstract class Question {
+	/*
+	 * public static final int YESNO = 1; public static final int MULTIPLECHOICE = 2; public static final int CHECKBOX =
+	 * 3; public static final int SLIDER = 4; public static final int NUMERIC = 5; public static final int DRAGANDDROP =
+	 * 6;
+	 */
+	public static enum Types {
+		YESNO, MULTIPLECHOICE, CHECKBOX, SLIDER, NUMERIC, DRAGANDDROP
+	}
 
 	private int id;
 	private String question;
 	private String series;
 	private String theme;
+
+	public static Question getQuestion(Types choice) {
+		switch (choice) {
+		case YESNO:
+			return new Yesno();
+		case MULTIPLECHOICE:
+			return new Multiplechoice();
+		case CHECKBOX:
+			return new Checkbox();
+		case SLIDER:
+			return new Slider();
+		case NUMERIC:
+			return new Numeric();
+		case DRAGANDDROP:
+			return new DragAndDrop();
+		default:
+			return null;
+		}
+	}
+
+	public abstract Types getType();
 
 	public String getTheme() {
 		return theme;
@@ -49,8 +74,7 @@ public abstract class Question {
 
 	public abstract boolean checkAnswer(Object answer);
 
-	@Override
-	public abstract String toString();
+	public abstract String answerToString();
 
 	@Override
 	public boolean equals(Object object) {

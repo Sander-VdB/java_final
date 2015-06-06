@@ -9,6 +9,11 @@ public class Multiplechoice extends Question {
 	private String answer;
 	private Set<String> entries;
 
+	@Override
+	public Types getType() {
+		return Types.MULTIPLECHOICE;
+	}
+
 	private String getAnswer() {
 		return answer;
 	}
@@ -49,7 +54,7 @@ public class Multiplechoice extends Question {
 	}
 
 	@Override
-	public String toString() {
+	public String answerToString() {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append(this.answer + ":");

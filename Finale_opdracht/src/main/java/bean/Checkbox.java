@@ -14,6 +14,11 @@ public class Checkbox extends Question {
 		this.answers = new HashMap<String, Boolean>();
 	}
 
+	@Override
+	public Types getType() {
+		return Types.CHECKBOX;
+	}
+
 	private Boolean getAnswer(String value) {
 		return answers.get(value);
 	}
@@ -61,7 +66,7 @@ public class Checkbox extends Question {
 	}
 
 	@Override
-	public String toString() {
+	public String answerToString() {
 		StringBuilder builder = new StringBuilder();
 
 		for (Map.Entry<String, Boolean> entry : this.answers.entrySet()) {

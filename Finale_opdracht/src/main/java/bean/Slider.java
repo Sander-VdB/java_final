@@ -8,6 +8,11 @@ public class Slider extends Numeric {
 	private int end;
 	private int increment;
 
+	@Override
+	public Types getType() {
+		return Types.SLIDER;
+	}
+
 	public int getStart() {
 		return start;
 	}
@@ -46,7 +51,7 @@ public class Slider extends Numeric {
 	}
 
 	@Override
-	public String toString() {
+	public String answerToString() {
 		return String.valueOf(super.getAnswer()) + ";" + String.valueOf(start) + ";" + String.valueOf(end) + ";"
 				+ String.valueOf(increment);
 	}

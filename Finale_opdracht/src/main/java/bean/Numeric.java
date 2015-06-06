@@ -6,6 +6,11 @@ public class Numeric extends Question {
 
 	private int answer;
 
+	@Override
+	public Types getType() {
+		return Types.NUMERIC;
+	}
+
 	protected int getAnswer() {
 		return answer;
 	}
@@ -33,7 +38,7 @@ public class Numeric extends Question {
 	}
 
 	@Override
-	public String toString() {
+	public String answerToString() {
 		return String.valueOf(this.getAnswer());
 	}
 

@@ -15,6 +15,11 @@ public class DragAndDrop extends Question {
 		this.answer = new HashMap<String, String>();
 	}
 
+	@Override
+	public Types getType() {
+		return Types.DRAGANDDROP;
+	}
+
 	private String getAnswer(String key) {
 		return answer.get(key);
 	}
@@ -69,7 +74,7 @@ public class DragAndDrop extends Question {
 	}
 
 	@Override
-	public String toString() {
+	public String answerToString() {
 		StringBuilder builder = new StringBuilder();
 
 		for (Map.Entry<String, String> entry : this.answer.entrySet()) {
