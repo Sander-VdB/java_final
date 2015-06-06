@@ -18,7 +18,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findAll() {
-		final String SQL_SELECT = "SELECT Id,Username FROM Users";
+		final String SQL_SELECT = "SELECT Id,Username,Password FROM Users";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			ResultSet set = statementSelect.executeQuery();
@@ -28,6 +28,7 @@ public class MySQLUserDAO implements UserDAO {
 				User user = new User();
 				user.setId(set.getInt("Id"));
 				user.setUsername(set.getString("Username"));
+				user.setEncryptedPassword(set.getString("Password"));
 
 				userList.add(user);
 			}
@@ -40,7 +41,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findById(int id) {
-		final String SQL_SELECT = "SELECT Username FROM Users WHERE Id=?";
+		final String SQL_SELECT = "SELECT Username,Password FROM Users WHERE Id=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			statementSelect.setInt(1, id);
@@ -51,6 +52,7 @@ public class MySQLUserDAO implements UserDAO {
 				User user = new User();
 				user.setId(id);
 				user.setUsername(set.getString("Username"));
+				user.setEncryptedPassword(set.getString("Password"));
 
 				userList.add(user);
 			}
@@ -63,7 +65,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findByName(String username) {
-		final String SQL_SELECT = "SELECT Id FROM Users WHERE Username=?";
+		final String SQL_SELECT = "SELECT Id,Password FROM Users WHERE Username=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			statementSelect.setString(1, username);
@@ -74,6 +76,7 @@ public class MySQLUserDAO implements UserDAO {
 				User user = new User();
 				user.setId(set.getInt("Id"));
 				user.setUsername(username);
+				user.setEncryptedPassword(set.getString("Password"));
 
 				userList.add(user);
 			}
@@ -86,11 +89,12 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public int insertUser(User user) {
-		final String SQL_INSERT = "INSERT INTO Users (Username) VALUES (?)";
+		final String SQL_INSERT = "INSERT INTO Users (Username,Password) VALUES (?,?)";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementInsert = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
 			connection.setAutoCommit(false);
 			statementInsert.setString(1, user.getUsername());
+			statementInsert.setString(2, user.getEncryptedPassword());
 
 			if (statementInsert.executeUpdate() == 1) {
 				connection.commit();
@@ -110,12 +114,13 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) {
-		final String SQL_UPDATE = "UPDATE Users SET Username=? WHERE Id=?";
+		final String SQL_UPDATE = "UPDATE Users SET Username=?,Password=? WHERE Id=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementUpdate = connection.prepareStatement(SQL_UPDATE)) {
 			connection.setAutoCommit(false);
 			statementUpdate.setString(1, user.getUsername());
-			statementUpdate.setInt(2, user.getId());
+			statementUpdate.setString(2, user.getEncryptedPassword());
+			statementUpdate.setInt(3, user.getId());
 
 			if (statementUpdate.executeUpdate() == 1) {
 				connection.commit();

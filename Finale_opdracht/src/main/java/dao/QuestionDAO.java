@@ -11,6 +11,10 @@ public interface QuestionDAO {
 
 	List<Question> findByName(String question);
 
+	List<Question> findBySeries(String series);
+
+	List<Question> findByTheme(String theme);
+
 	/**
 	 * @param question
 	 * @return id of inserted question

@@ -24,6 +24,14 @@ public class User {
 		this.username = username;
 	}
 
+	public String getEncryptedPassword() {
+		return this.encryptedPassword;
+	}
+
+	public void setEncryptedPassword(String encryptedpassword) {
+		this.encryptedPassword = encryptedpassword;
+	}
+
 	/*
 	 * protected String getPassword() throws Exception { return Encryptor.decrypt(this.encryptedPassword); }
 	 */
