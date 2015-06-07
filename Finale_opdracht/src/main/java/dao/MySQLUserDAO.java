@@ -18,7 +18,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findAll() {
-		final String SQL_SELECT = "SELECT Id,Username,Password FROM Users";
+		final String SQL_SELECT = "SELECT Id,Username,Password,Role FROM Users";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			ResultSet set = statementSelect.executeQuery();
@@ -29,6 +29,7 @@ public class MySQLUserDAO implements UserDAO {
 				user.setId(set.getInt("Id"));
 				user.setUsername(set.getString("Username"));
 				user.setEncryptedPassword(set.getString("Password"));
+				user.setRole(User.Roles.valueOf(set.getString("Role")));
 
 				userList.add(user);
 			}
@@ -41,7 +42,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findById(int id) {
-		final String SQL_SELECT = "SELECT Username,Password FROM Users WHERE Id=?";
+		final String SQL_SELECT = "SELECT Username,Password,Role FROM Users WHERE Id=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			statementSelect.setInt(1, id);
@@ -53,6 +54,7 @@ public class MySQLUserDAO implements UserDAO {
 				user.setId(id);
 				user.setUsername(set.getString("Username"));
 				user.setEncryptedPassword(set.getString("Password"));
+				user.setRole(User.Roles.valueOf(set.getString("Role")));
 
 				userList.add(user);
 			}
@@ -65,7 +67,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public List<User> findByName(String username) {
-		final String SQL_SELECT = "SELECT Id,Password FROM Users WHERE Username=?";
+		final String SQL_SELECT = "SELECT Id,Password,Role FROM Users WHERE Username=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			statementSelect.setString(1, username);
@@ -77,6 +79,7 @@ public class MySQLUserDAO implements UserDAO {
 				user.setId(set.getInt("Id"));
 				user.setUsername(username);
 				user.setEncryptedPassword(set.getString("Password"));
+				user.setRole(User.Roles.valueOf(set.getString("Role")));
 
 				userList.add(user);
 			}
@@ -89,7 +92,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public User find(String username, String password) {
-		final String SQL_SELECT = "SELECT Id FROM Users WHERE Username=?,Password=?";
+		final String SQL_SELECT = "SELECT Id,Role FROM Users WHERE Username=?,Password=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			statementSelect.setString(1, username);
@@ -101,6 +104,7 @@ public class MySQLUserDAO implements UserDAO {
 				user.setId(set.getInt("Id"));
 				user.setUsername(username);
 				user.setEncryptedPassword(password);
+				user.setRole(User.Roles.valueOf(set.getString("Role")));
 			}
 			return user;
 		} catch (SQLException ex) {
@@ -111,12 +115,13 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public int insertUser(User user) {
-		final String SQL_INSERT = "INSERT INTO Users (Username,Password) VALUES (?,?)";
+		final String SQL_INSERT = "INSERT INTO Users (Username,Password,Role) VALUES (?,?,?)";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementInsert = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
 			connection.setAutoCommit(false);
 			statementInsert.setString(1, user.getUsername());
 			statementInsert.setString(2, user.getEncryptedPassword());
+			statementInsert.setString(3, user.getRole().name());
 
 			if (statementInsert.executeUpdate() == 1) {
 				connection.commit();
@@ -136,13 +141,14 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) {
-		final String SQL_UPDATE = "UPDATE Users SET Username=?,Password=? WHERE Id=?";
+		final String SQL_UPDATE = "UPDATE Users SET Username=?,Password=?,Role=? WHERE Id=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementUpdate = connection.prepareStatement(SQL_UPDATE)) {
 			connection.setAutoCommit(false);
 			statementUpdate.setString(1, user.getUsername());
 			statementUpdate.setString(2, user.getEncryptedPassword());
-			statementUpdate.setInt(3, user.getId());
+			statementUpdate.setString(3, user.getRole().name());
+			statementUpdate.setInt(4, user.getId());
 
 			if (statementUpdate.executeUpdate() == 1) {
 				connection.commit();
@@ -180,7 +186,8 @@ public class MySQLUserDAO implements UserDAO {
 	@Override
 	public boolean createTable(String user, String password) {
 		final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Users (Id INT NOT NULL AUTO_INCREMENT,"
-				+ "Username VARCHAR(30) NOT NULL," + "Password VARCHAR(30) NOT NULL," + "PRIMARY KEY (Id))";
+				+ "Username VARCHAR(30) NOT NULL," + "Password VARCHAR(30) NOT NULL," + "Role VARCHAR(30) NOT NULL,"
+				+ "PRIMARY KEY (Id))";
 		try (Connection connection = MySQLDAOFactory.createConnection(user, password);
 				PreparedStatement statementCreate = connection.prepareStatement(SQL_CREATE)) {
 			connection.setAutoCommit(false);

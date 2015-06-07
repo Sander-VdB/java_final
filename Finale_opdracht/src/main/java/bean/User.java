@@ -4,9 +4,23 @@ import util.Encryptor;
 
 public class User {
 
+	public static enum Roles {
+		SUPERADMIN, ADMIN, PARTICIPANT
+	}
+
 	private int id;
 	private String username;
 	private String encryptedPassword;
+
+	private Roles role;
+
+	public Roles getRole() {
+		return role;
+	}
+
+	public void setRole(Roles role) {
+		this.role = role;
+	}
 
 	public int getId() {
 		return id;
