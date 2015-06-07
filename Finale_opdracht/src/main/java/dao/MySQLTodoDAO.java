@@ -175,14 +175,14 @@ public class MySQLTodoDAO implements TodoDAO {
 
 	@Override
 	public boolean createTable(String user, String password) {
-		final String SQL_INSERT = "CREATE TABLE IF NOT EXISTS Todo (Userid INT NOT NULL," + "Questionid NOT NULL,"
+		final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS Todo (Userid INT NOT NULL," + "Questionid INT NOT NULL,"
 				+ "Answer VARCHAR(60) NOT NULL," + "PRIMARY KEY (Userid,Questionid),"
 				+ "FOREIGN KEY (Questionid) REFERENCES Questions(Id)," + "FOREIGN KEY (Userid) REFERENCES Users(Id))";
 		try (Connection connection = MySQLDAOFactory.createConnection(user, password);
-				PreparedStatement statementInsert = connection.prepareStatement(SQL_INSERT)) {
+				PreparedStatement statementCreate = connection.prepareStatement(SQL_CREATE)) {
 			connection.setAutoCommit(false);
 
-			if (statementInsert.executeUpdate() == 0) {
+			if (statementCreate.executeUpdate() == 0) {
 				connection.commit();
 				return true;
 			} else {

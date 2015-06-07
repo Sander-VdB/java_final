@@ -49,6 +49,8 @@ public class MySQLDAOFactory extends DAOFactory {
 		// create all tables
 		try {
 			new MySQLUserDAO().createTable(_user, _password);
+			new MySQLQuestionDAO().createTable(_user, _password);
+			new MySQLTodoDAO().createTable(_user, _password);
 		} catch (Exception ex) {
 			ex.getMessage();
 			return false;

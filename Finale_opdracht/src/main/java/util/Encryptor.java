@@ -15,7 +15,8 @@ import sun.misc.BASE64Encoder;
 public class Encryptor {
 
 	private static final String ALGO = "AES";
-	private static final byte[] keyValue = new byte[] { 'A', '@', '4', 'j', 'K', '4', 'I', '!', 'L', 'z', '0' };
+	private static final String keyValue = "mYEnc@pti0nKl42u";
+	private static final String UNICODE_FORMAT = "UTF8";
 
 	public static String encrypt(String Data) throws Exception {
 		Key key = generateKey();
@@ -37,7 +38,7 @@ public class Encryptor {
 	}
 
 	private static Key generateKey() throws Exception {
-		Key key = new SecretKeySpec(keyValue, ALGO);
+		Key key = new SecretKeySpec(keyValue.getBytes(UNICODE_FORMAT), ALGO);
 		return key;
 	}
 }

@@ -11,7 +11,6 @@ public class User {
 	private int id;
 	private String username;
 	private String encryptedPassword;
-
 	private Roles role;
 
 	public Roles getRole() {
@@ -60,6 +59,7 @@ public class User {
 
 	public User() {
 		this.setId(-1);
+		this.setRole(Roles.PARTICIPANT);
 	}
 
 	public User(String username) {

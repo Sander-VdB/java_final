@@ -92,7 +92,7 @@ public class MySQLUserDAO implements UserDAO {
 
 	@Override
 	public User find(String username, String password) {
-		final String SQL_SELECT = "SELECT Id,Role FROM Users WHERE Username=?,Password=?";
+		final String SQL_SELECT = "SELECT Id,Role FROM Users WHERE Username=? AND Password=?";
 		try (Connection connection = MySQLDAOFactory.createConnection();
 				PreparedStatement statementSelect = connection.prepareStatement(SQL_SELECT)) {
 			statementSelect.setString(1, username);
