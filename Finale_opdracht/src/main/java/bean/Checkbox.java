@@ -37,7 +37,16 @@ public class Checkbox extends Question {
 	 *   @return 	true/false
 	 */
 	public boolean checkAnswer(Object answer) {
-		if (answer instanceof Map) {
+		if (answer instanceof String[]) {
+			String[] answers = (String[]) answer;
+			for (String entry : answers) {
+				if (!this.getAnswer(entry)) {
+					return false;
+				}
+			}
+			// if all checks ok then all answers are correct
+			return true;
+		} else if (answer instanceof Map) {
 			Map<String, Boolean> answers = (Map<String, Boolean>) answer;
 			for (Map.Entry<String, Boolean> entry : answers.entrySet()) {
 				if (this.getAnswer(entry.getKey()) != entry.getValue()) {

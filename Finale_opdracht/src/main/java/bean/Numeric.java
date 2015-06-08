@@ -21,6 +21,13 @@ public class Numeric extends Question {
 
 	@Override
 	public boolean checkAnswer(Object answer) {
+		if (answer instanceof String) {
+			try {
+				return Integer.parseInt((String) answer) == this.answer;
+			} catch (Exception e) {
+				return false;
+			}
+		}
 		if (answer instanceof Integer) {
 			return (Integer) answer == this.answer;
 		} else {
